@@ -28,7 +28,10 @@ function LoginPage() {
       <Grid container justify="center">
         <Grid item xs={4}>
           <Typography align="center" variant="h3">
-            Login
+            HEXACOM
+          </Typography>
+          <Typography align="center" variant="h6">
+            Login Page
           </Typography>
         </Grid>
       </Grid>
@@ -66,7 +69,13 @@ function LoginPage() {
       <Grid container justify="center" className={classes.marginTop}>
         <Grid item xs={2}>
           <Typography align="center" variant="h4">
-            <Button variant="contained" color="primary" href="#contained-buttons" fullWidth size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              href="#contained-buttons"
+              fullWidth
+              size="large"
+            >
               Login
             </Button>
           </Typography>
