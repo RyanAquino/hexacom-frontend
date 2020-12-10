@@ -1,22 +1,23 @@
 import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
-const useStyle = makeStyles(() => ({
-  dataTable: {
-    marginTop: '3%',
-  },
-}));
+function AdminAccounts() {
+  const useStyle = makeStyles(() => ({
+    dataTable: {
+      marginTop: '3%',
+    },
+  }));
 
-function AdminDashboard() {
   const columns = [
     {
-      name: 'job_order',
-      label: 'Job Order',
+      name: 'id',
+      label: 'ID',
       options: {
         filter: true,
         sort: true,
-        sortAscFirst: true,
       },
     },
     {
@@ -28,40 +29,16 @@ function AdminDashboard() {
       },
     },
     {
-      name: 'item',
-      label: 'Item',
+      name: 'number',
+      label: 'Contact Number',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'brand',
-      label: 'Brand',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'date_received',
-      label: 'Date Received',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'date_released',
-      label: 'Date Released',
+      name: 'address',
+      label: 'Address',
       options: {
         filter: true,
         sort: true,
@@ -75,30 +52,43 @@ function AdminDashboard() {
         sort: true,
       },
     },
+    {
+      name: '-',
+      label: '-',
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
   ];
   const data = [
     {
-      job_order: 'J001',
+      id: '1001',
       name: 'Jack Ibagbaga',
-      item: 'Printer',
-      brand: 'HP',
-      description: 'Unable to read cartridge',
-      date_received: '2020/12/4',
-      date_released: 'N/A',
-      status: 'Ongoing',
+      number: '090909090909',
+      address: 'Ijay Bangir',
+      status: 'Active',
     },
   ];
 
   const options = {
     selectableRows: 'none',
+    customToolbar: () => (
+      <Button
+        variant="contained"
+        color="secondary"
+        startIcon={<AddIcon />}
+      >
+        New
+      </Button>
+    ),
   };
   const classes = useStyle();
   return (
     <>
-
       <div className={classes.dataTable}>
         <MUIDataTable
-          title=" Data Records "
+          title="Account Management"
           data={data}
           columns={columns}
           options={options}
@@ -108,4 +98,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default AdminAccounts;

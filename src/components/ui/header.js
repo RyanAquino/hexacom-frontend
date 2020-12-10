@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Link } from 'react-router-dom';
 
 const StyledMenu = withStyles({
   paper: {
@@ -75,13 +76,24 @@ function Header() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [value, setValue] = useState(0);
+  const [val, setValue] = useState(0);
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const changeNavigation = (e, v) => {
-    setValue(v);
+  const changeNavigation = (e, value) => {
+    setValue(value);
   };
+
+  useEffect(() => {
+    if (window.location.pathname === '/dashboard' && val !== 0) {
+      setValue(0);
+    } else if (window.location.pathname === '/accounts' && val !== 1) {
+      setValue(1);
+    } else if (window.location.pathname === '/dashboard' && val !== 2) {
+      setValue(2);
+    }
+  }, []);
+
   return (
     <>
       <div className={classes.root}>
@@ -90,10 +102,15 @@ function Header() {
             <Typography variant="h6" color="inherit">
               Hexacom
             </Typography>
-            <Tabs value={value} onChange={changeNavigation} className={classes.tabContainer}>
-              <Tab className={classes.tab} label="Dashboard" />
-              <Tab className={classes.tab} label="Accounts" />
-              <Tab className={classes.tab} label="Configuration" />
+            <Tabs value={val} onChange={changeNavigation} className={classes.tabContainer}>
+              <Tab className={classes.tab} label="Dashboard" component={Link} to="/dashboard" />
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts" />
+              <Tab
+                className={classes.tab}
+                label="Configuration"
+                component={Link}
+                to="/configurations"
+              />
             </Tabs>
             <IconButton>
               <PermIdentityIcon onClick={handleClick} />
