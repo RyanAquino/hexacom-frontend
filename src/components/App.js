@@ -2,12 +2,13 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './ui/Theme';
-// import AdminDashboard from './ui/admin-dashboard';
+import AdminDashboard from './ui/admin-dashboard';
 import LoginPage from './ui/loginPage';
 import Header from './ui/header';
-import AdminDashboard from './ui/admin-dashboard';
+// import AdminDashboard from './ui/admin-dashboard';
 import AdminAccounts from './ui/admin-accounts';
 // import AdminAccounts from './ui/admin-accounts';
+// import Accounts from './ui/accounts';
 
 function App() {
   return (
