@@ -92,6 +92,7 @@ function Header() {
     } else if (window.location.pathname === '/dashboard' && val !== 2) {
       setValue(2);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -103,8 +104,8 @@ function Header() {
               Hexacom
             </Typography>
             <Tabs value={val} onChange={changeNavigation} className={classes.tabContainer}>
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard" />
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts" />
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard"/>
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts"/>
               <Tab
                 className={classes.tab}
                 label="Configuration"
@@ -113,7 +114,7 @@ function Header() {
               />
             </Tabs>
             <IconButton>
-              <PermIdentityIcon onClick={handleClick} />
+              <PermIdentityIcon onClick={handleClick}/>
             </IconButton>
             <StyledMenu
               id="customized-menu"
@@ -124,20 +125,20 @@ function Header() {
             >
               <StyledMenuItem>
                 <ListItemIcon>
-                  <AccountCircleIcon />
+                  <AccountCircleIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Account" />
+                <ListItemText primary="Account"/>
               </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemIcon>
-                  <ExitToAppIcon />
+                  <ExitToAppIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText primary="Logout"/>
               </StyledMenuItem>
             </StyledMenu>
           </Toolbar>
         </AppBar>
-        <div className={classes.toolbarMargin} />
+        <div className={classes.toolbarMargin}/>
       </div>
     </>
   );
