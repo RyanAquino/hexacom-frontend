@@ -99,21 +99,6 @@ function AdminAccounts() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  // const onChangeUsername = (event) => {
-  //   setUsername(event.target.value);
-  //   console.log(username);
-  // };
-  //
-  // const onChangePassword = (event) => {
-  //   setPassword(event.target.value);
-  //   console.log(password);
-  // };
-  //
-  // const onChangeName = (event) => {
-  //   setName(event.target.value);
-  //   console.log(name);
-  // };
-
   useEffect(() => {
     axios.get('http://localhost:5000/users', {
       headers: {
