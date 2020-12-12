@@ -103,7 +103,7 @@ function Header() {
               Hexacom
             </Typography>
             <Tabs value={val} onChange={changeNavigation} className={classes.tabContainer}>
-              <Tab className={classes.tab} label="Dashboard" component={Link} to="/dashboard" />
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard" />
               <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts" />
               <Tab
                 className={classes.tab}
