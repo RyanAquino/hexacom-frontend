@@ -15,6 +15,7 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 const StyledMenu = withStyles({
   paper: {
@@ -89,10 +90,9 @@ function Header() {
       setValue(0);
     } else if (window.location.pathname === '/accounts' && val !== 1) {
       setValue(1);
-    } else if (window.location.pathname === '/dashboard' && val !== 2) {
+    } else if (window.location.pathname === '/configurations' && val !== 2) {
       setValue(2);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -113,8 +113,8 @@ function Header() {
                 to="/configurations"
               />
             </Tabs>
-            <IconButton>
-              <PermIdentityIcon onClick={handleClick}/>
+            <IconButton onClick={handleClick}>
+              <PersonOutlineIcon />
             </IconButton>
             <StyledMenu
               id="customized-menu"

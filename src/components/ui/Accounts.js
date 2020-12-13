@@ -13,8 +13,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import axios from 'axios';
 import theme from './Theme';
+import Header from './header';
 
-function AdminAccounts() {
+function Accounts() {
   const useStyle = makeStyles(() => ({
     dataTable: {
       marginTop: '3%',
@@ -160,6 +161,7 @@ function AdminAccounts() {
   const classes = useStyle();
   return (
     <>
+      <Header />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -238,4 +240,4 @@ function AdminAccounts() {
   );
 }
 
-export default AdminAccounts;
+export default Accounts;

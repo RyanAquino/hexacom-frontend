@@ -11,13 +11,21 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAuthenticated: false,
-      authToken: '',
       username: '',
       password: '',
       checkingCredentials: false,
       invalidCredentials: false
     };
+
+  }
+
+  componentDidMount() {
+    console.log(localStorage.getItem('token'),);
+    console.log(localStorage.getItem('username'));
+    if (localStorage.getItem('token') !== null && localStorage.getItem('username') !== null) {
+      console.log('redirecting....')
+      document.location.href = '/dashboard'
+    }
 
   }
 
@@ -35,19 +43,16 @@ class Login extends Component {
     axios.post('login', data, { headers })
       .then((response) => {
         if (response.data.access_token) {
-          this.setState({
-            authToken: response.data.access_token,
-            isAuthenticated: true,
-            username: '',
-            password: ''
-
-          });
+          localStorage.setItem('token', response.data.access_token);
+          localStorage.setItem('username', this.state.username);
         }
-        console.log(this.state.authToken)
+        console.log(localStorage.getItem('token'));
+        console.log(localStorage.getItem('username'));
         this.setState({
           checkingCredentials: false,
           invalidCredentials: false
         });
+
       })
       .catch((e) => {
         this.setState({
