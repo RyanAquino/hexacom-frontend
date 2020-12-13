@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import { IconButton } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -15,6 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 const StyledMenu = withStyles({
   paper: {
@@ -89,7 +89,7 @@ function Header() {
       setValue(0);
     } else if (window.location.pathname === '/accounts' && val !== 1) {
       setValue(1);
-    } else if (window.location.pathname === '/dashboard' && val !== 2) {
+    } else if (window.location.pathname === '/configurations' && val !== 2) {
       setValue(2);
     }
   }, []);
@@ -112,8 +112,8 @@ function Header() {
                 to="/configurations"
               />
             </Tabs>
-            <IconButton>
-              <PermIdentityIcon onClick={handleClick} />
+            <IconButton onClick={handleClick}>
+              <PersonOutlineIcon />
             </IconButton>
             <StyledMenu
               id="customized-menu"

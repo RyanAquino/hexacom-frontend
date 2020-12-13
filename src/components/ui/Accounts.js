@@ -13,8 +13,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import axios from 'axios';
 import theme from './Theme';
+import Header from './header';
 
-function AdminAccounts() {
+function Accounts() {
   const useStyle = makeStyles(() => ({
     dataTable: {
       marginTop: '3%',
@@ -107,15 +108,11 @@ function AdminAccounts() {
       },
     })
       .then((response) => {
-        // console.log(typeof response);
         const res = response.data.user;
-        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < res.length; i++) {
-          // console.log(i);
           delete res[i].job_orders;
         }
         setUseData(res);
-        // console.log(dataArray);
       });
   }, []);
 
@@ -160,6 +157,7 @@ function AdminAccounts() {
   const classes = useStyle();
   return (
     <>
+      <Header />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -238,4 +236,4 @@ function AdminAccounts() {
   );
 }
 
-export default AdminAccounts;
+export default Accounts;
