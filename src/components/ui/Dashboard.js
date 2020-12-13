@@ -3,19 +3,19 @@ import MUIDataTable from 'mui-datatables';
 import Header from './header';
 
 class Dashboard extends Component {
+  componentDidMount() {
+    if (localStorage.getItem('token') == null && localStorage.getItem('username')) {
+      document.location.href = '/dashboard';
+    }
+    console.log(localStorage.getItem('token'));
+    console.log(localStorage.getItem('username'));
+  }
+
   styles = () => ({
     dataTable: {
       marginTop: '3%',
     },
   });
-
-  componentDidMount() {
-    if(localStorage.getItem('token') == null && localStorage.getItem('username')){
-      document.location.href = '/dashboard'
-    }
-    console.log(localStorage.getItem('token'));
-    console.log(localStorage.getItem('username'));
-  }
 
   render() {
     const columns = [
@@ -103,7 +103,7 @@ class Dashboard extends Component {
     };
     return (
       <>
-        <Header/>
+        <Header />
         <div style={this.styles.dataTable}>
           <MUIDataTable
             title=" Data Records "
@@ -114,9 +114,7 @@ class Dashboard extends Component {
         </div>
       </>
     );
-
   }
-
 }
 
 export default Dashboard;

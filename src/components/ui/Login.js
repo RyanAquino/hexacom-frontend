@@ -14,28 +14,38 @@ class Login extends Component {
       username: '',
       password: '',
       checkingCredentials: false,
-      invalidCredentials: false
+      invalidCredentials: false,
     };
-
   }
 
   componentDidMount() {
-    console.log(localStorage.getItem('token'),);
+    console.log(localStorage.getItem('token'));
     console.log(localStorage.getItem('username'));
     if (localStorage.getItem('token') !== null && localStorage.getItem('username') !== null) {
-      console.log('redirecting....')
-      document.location.href = '/dashboard'
+      console.log('redirecting....');
+      document.location.href = '/dashboard';
     }
-
   }
+
+  usernameChangeHandler = (event) => {
+    this.setState({
+      username: event.target.value,
+    });
+  };
+
+  passwordChangeHandler = (event) => {
+    this.setState({
+      password: event.target.value,
+    });
+  };
 
   loginHandler() {
     this.setState({
-      checkingCredentials: true
+      checkingCredentials: true,
     });
     const data = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
     };
     const headers = {
       'Content-type': 'Application/json',
@@ -50,31 +60,17 @@ class Login extends Component {
         console.log(localStorage.getItem('username'));
         this.setState({
           checkingCredentials: false,
-          invalidCredentials: false
+          invalidCredentials: false,
         });
-
       })
       .catch((e) => {
         this.setState({
           checkingCredentials: false,
-          invalidCredentials: true
+          invalidCredentials: true,
         });
         console.log(e);
-      })
-    ;
-  };
-
-  usernameChangeHandler = (event) => {
-    this.setState({
-      username: event.target.value,
-    });
-  };
-
-  passwordChangeHandler = (event) => {
-    this.setState({
-      password: event.target.value,
-    });
-  };
+      });
+  }
 
   render() {
     const styles = {
@@ -98,16 +94,20 @@ class Login extends Component {
       <div>
 
         {
-          this.state.invalidCredentials ?
-            <Grid container justify="center" style={styles.marginTop}>
-              <Grid item xs={3}>
-                <Typography align="center" variant="h4">
-                  <Alert severity="error">Wrong Credentials!, Please check your username and
-                    password.</Alert>
-                </Typography>
+          this.state.invalidCredentials
+            ? (
+              <Grid container justify="center" style={styles.marginTop}>
+                <Grid item xs={3}>
+                  <Typography align="center" variant="h4">
+                    <Alert severity="error">
+                      Wrong Credentials!, Please check your username and
+                      password.
+                    </Alert>
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid> :
-            null
+            )
+            : null
         }
         <div style={styles.root}>
           <Grid container justify="center">
@@ -157,33 +157,35 @@ class Login extends Component {
           </Grid>
 
           {
-            this.state.checkingCredentials ?
-              <Grid container justify="center" style={styles.marginTop}>
-                <Grid item xs={3}>
-                  <Typography align="center" variant="h4">
-                    <CircularProgress/>
-                  </Typography>
+            this.state.checkingCredentials
+              ? (
+                <Grid container justify="center" style={styles.marginTop}>
+                  <Grid item xs={3}>
+                    <Typography align="center" variant="h4">
+                      <CircularProgress />
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              :
-              <Grid container justify="center" style={styles.marginTop}>
-                <Grid item xs={3}>
-                  <Typography align="center" variant="h4">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      href="#contained-buttons"
-                      fullWidth
-                      size="large"
-                      onClick={() => this.loginHandler()}
-                    >
-                      Login
-                    </Button>
-                  </Typography>
+              )
+              : (
+                <Grid container justify="center" style={styles.marginTop}>
+                  <Grid item xs={3}>
+                    <Typography align="center" variant="h4">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        href="#contained-buttons"
+                        fullWidth
+                        size="large"
+                        onClick={() => this.loginHandler()}
+                      >
+                        Login
+                      </Button>
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
+              )
           }
-
 
         </div>
       </div>

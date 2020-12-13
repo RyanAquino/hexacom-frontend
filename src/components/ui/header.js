@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import { IconButton } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -104,8 +103,8 @@ function Header() {
               Hexacom
             </Typography>
             <Tabs value={val} onChange={changeNavigation} className={classes.tabContainer}>
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard"/>
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts"/>
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard" />
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts" />
               <Tab
                 className={classes.tab}
                 label="Configuration"
@@ -125,20 +124,20 @@ function Header() {
             >
               <StyledMenuItem>
                 <ListItemIcon>
-                  <AccountCircleIcon/>
+                  <AccountCircleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Account"/>
+                <ListItemText primary="Account" />
               </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemIcon>
-                  <ExitToAppIcon/>
+                  <ExitToAppIcon />
                 </ListItemIcon>
-                <ListItemText primary="Logout"/>
+                <ListItemText primary="Logout" />
               </StyledMenuItem>
             </StyledMenu>
           </Toolbar>
         </AppBar>
-        <div className={classes.toolbarMargin}/>
+        <div className={classes.toolbarMargin} />
       </div>
     </>
   );

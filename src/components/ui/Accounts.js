@@ -108,15 +108,11 @@ function Accounts() {
       },
     })
       .then((response) => {
-        // console.log(typeof response);
         const res = response.data.user;
-        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < res.length; i++) {
-          // console.log(i);
           delete res[i].job_orders;
         }
         setUseData(res);
-        // console.log(dataArray);
       });
   }, []);
 

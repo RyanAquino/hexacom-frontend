@@ -1,10 +1,15 @@
 {
+    "root": true,
     "env": {
         "jest": true,
         "browser": true,
         "node": true
     },
     "extends": [
+/* Waiting for fix
+https://github.com/facebook/create-react-app/issues/10021#issuecomment-724247806
+https://github.com/facebook/create-react-app/issues/9887
+*/
 //        "plugin:react/recommended",
 //        "airbnb"
     ],
@@ -12,16 +17,23 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": 2020,
         "sourceType": "module"
     },
     "plugins": [
         "react",
+        "import",
         "react-hooks"
     ],
+    "parser": "babel-eslint",
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "import/no-named-as-default": 0,
+        "import/no-named-as-default-member": 0,
         "linebreak-style": 0,
-        "global-require": 0
+        "no-console": "off",
+        "global-require": 0,
+        "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+        "react/destructuring-assignment": 0
     }
 }
