@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const StyledMenu = withStyles({
   paper: {
@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     marginLeft: '25px',
   },
+  username :{
+    color: 'white'
+  }
 }));
 
 function Header() {
@@ -103,17 +106,14 @@ function Header() {
               Hexacom
             </Typography>
             <Tabs value={val} onChange={changeNavigation} className={classes.tabContainer}>
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/dashboard" />
-              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts" />
-              <Tab
-                className={classes.tab}
-                label="Configuration"
-                component={Link}
-                to="/configurations"
+              <Tab className={classes.tab} label="Dashboard" component={Link} to="/dashboard"/>
+              <Tab className={classes.tab} label="Accounts" component={Link} to="/accounts"/>
+              <Tab className={classes.tab} label="Configuration" component={Link} to="/configurations"
               />
             </Tabs>
             <IconButton onClick={handleClick}>
-              <PersonOutlineIcon />
+              <h5 className={classes.username}> {localStorage.username}</h5>
+              <ArrowDropDownIcon />
             </IconButton>
             <StyledMenu
               id="customized-menu"
@@ -124,20 +124,20 @@ function Header() {
             >
               <StyledMenuItem>
                 <ListItemIcon>
-                  <AccountCircleIcon />
+                  <AccountCircleIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Account" />
+                <ListItemText primary="Account"/>
               </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemIcon>
-                  <ExitToAppIcon />
+                  <ExitToAppIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText primary="Logout"/>
               </StyledMenuItem>
             </StyledMenu>
           </Toolbar>
         </AppBar>
-        <div className={classes.toolbarMargin} />
+        <div className={classes.toolbarMargin}/>
       </div>
     </>
   );

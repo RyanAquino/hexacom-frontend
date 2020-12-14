@@ -101,19 +101,30 @@ function Accounts() {
   const [name, setName] = useState('');
 
   useEffect(() => {
+    const userToken = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
     axios.get('http://localhost:5000/users', {
       headers: {
-        Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDc3Njk4MTEsImlhdCI6MTYwNzc0MTAxMSwibmJmIjoxNjA3NzQxMDExLCJpZGVudGl0eSI6Mn0.E1oNV2LpSB0_qV5xrd7Qg3K9Cbd9ivoxyAUKASwe-Kc',
+        Authorization: 'JWT' + ' ' + userToken,
         'Content-type': 'Application/json',
       },
     })
       .then((response) => {
         const res = response.data.user;
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < res.length; i++) {
+          // console.log(i);
           delete res[i].job_orders;
         }
         setUseData(res);
-      });
+        // console.log(dataArray);
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log(e.response.status);
+        // document.location.href = '/'
+      })
+    ;
   }, []);
 
   const [open, setOpen] = React.useState(false);
@@ -136,8 +147,16 @@ function Accounts() {
     axios.post('http://localhost:5000/register', data, { headers })
       .then((response) => {
         console.log(response);
-        window.location.reload(false);
-      });
+        if (response.status === 201) {
+          window.location.reload(false);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        document.location.href = '/';
+      })
+    ;
+    ;
   };
 
   const options = {
@@ -146,7 +165,7 @@ function Accounts() {
       <Button
         variant="contained"
         color="secondary"
-        startIcon={<AddIcon />}
+        startIcon={<AddIcon/>}
         onClick={handleOpen}
       >
         New
@@ -157,7 +176,7 @@ function Accounts() {
   const classes = useStyle();
   return (
     <>
-      <Header />
+      <Header/>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
