@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
 import MUIDataTable from 'mui-datatables';
 import Header from './header';
+import axios from 'axios';
 
 class Dashboard extends Component {
-  componentDidMount() {
-    if (localStorage.getItem('token') == null && localStorage.getItem('username')) {
-      document.location.href = '/dashboard';
-    }
-    console.log(localStorage.getItem('token'));
-    console.log(localStorage.getItem('username'));
-  }
-
   styles = () => ({
     dataTable: {
       marginTop: '3%',
     },
   });
+
+  componentDidMount() {
+    const userToken = localStorage.getItem('token')
+    const username = localStorage.getItem('username')
+    console.log(username)
+    if (userToken !== null){
+      axios.get('user/'+username, {
+        headers: {
+          Authorization: 'JWT' + ' ' + userToken,
+          'Content-type': 'Application/json',
+        },
+      })
+        .then((response) => {
+          // const res = response.data.user;
+          console.log(response.status);
+          if(response.status !== 200){
+            localStorage.clear()
+            document.location.href = '/'
+          }
+
+        })
+        .catch((e) => {
+          console.log(e);
+          document.location.href = '/'
+        })
+      ;
+    }
+  }
 
   render() {
     const columns = [
@@ -103,7 +124,7 @@ class Dashboard extends Component {
     };
     return (
       <>
-        <Header />
+        <Header/>
         <div style={this.styles.dataTable}>
           <MUIDataTable
             title=" Data Records "
@@ -114,7 +135,9 @@ class Dashboard extends Component {
         </div>
       </>
     );
+
   }
+
 }
 
 export default Dashboard;
