@@ -103,7 +103,7 @@ function Accounts() {
   useEffect(() => {
     const userToken = localStorage.getItem('token');
     const username = localStorage.getItem('username');
-    axios.get('http://localhost:5000/users', {
+    axios.get('users', {
       headers: {
         Authorization: 'JWT' + ' ' + userToken,
         'Content-type': 'Application/json',
@@ -113,7 +113,7 @@ function Accounts() {
         const res = response.data.user;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < res.length; i++) {
-          // console.log(i);
+          console.log(response);
           delete res[i].job_orders;
         }
         setUseData(res);
@@ -121,7 +121,6 @@ function Accounts() {
       })
       .catch((e) => {
         console.log(e);
-        console.log(e.response.status);
         // document.location.href = '/'
       })
     ;
@@ -144,7 +143,7 @@ function Accounts() {
     const headers = {
       'Content-type': 'Application/json',
     };
-    axios.post('http://localhost:5000/register', data, { headers })
+    axios.post('register', data, { headers })
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
