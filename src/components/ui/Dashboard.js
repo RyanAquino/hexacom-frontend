@@ -4,9 +4,16 @@ import Header from './header';
 import axios from 'axios';
 
 class Dashboard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      jobsData : []
+    }
+  }
   styles = () => ({
     dataTable: {
-      marginTop: '3%',
+      marginTop: '5%',
     },
   });
 
@@ -14,6 +21,7 @@ class Dashboard extends Component {
     const userToken = localStorage.getItem('token')
     const username = localStorage.getItem('username')
     console.log(username)
+    console.log(userToken)
     if (userToken !== null){
       axios.get('user/'+username, {
         headers: {
@@ -27,21 +35,53 @@ class Dashboard extends Component {
           if(response.status !== 200){
             localStorage.clear()
             document.location.href = '/'
+          }else {
+            axios.get('job_orders', {
+              headers: {
+                Authorization: 'JWT' + ' ' + userToken,
+                'Content-type': 'Application/json',
+              },
+            })
+                .then((response) => {
+                  let data = response.data.job_orders
+                  console.log(data)
+                  console.log(response.data.job_orders.length)
+                  console.log(data[0].date_released)
+                  for (let i =0; i < data.length; i++){
+                    if (data[i].date_released === null){
+                       data[i].status = "Ongoing";
+                       data[i].date_released = "N/A";
+                    }
+
+                  }
+                  this.setState({
+                    jobsData : response.data.job_orders
+                  })
+                  console.log(this.state.jobsData)
+                })
+                .catch((e) => {
+                  console.log(e)
+
+                })
+            ;
           }
 
         })
         .catch((e) => {
           console.log(e);
+          localStorage.clear()
           document.location.href = '/'
         })
       ;
     }
   }
 
+
+
   render() {
     const columns = [
       {
-        name: 'job_order',
+        name: 'job_id',
         label: 'Job Order',
         options: {
           filter: true,
@@ -50,7 +90,7 @@ class Dashboard extends Component {
         },
       },
       {
-        name: 'name',
+        name: 'technician_name',
         label: 'Name',
         options: {
           filter: true,
@@ -74,7 +114,7 @@ class Dashboard extends Component {
         },
       },
       {
-        name: 'description',
+        name: 'job_description',
         label: 'Description',
         options: {
           filter: true,
@@ -98,24 +138,20 @@ class Dashboard extends Component {
         },
       },
       {
+        name: 'brand',
+        label: 'Brand',
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
         name: 'status',
         label: 'Status',
         options: {
           filter: true,
           sort: true,
         },
-      },
-    ];
-    const data = [
-      {
-        job_order: 'J001',
-        name: 'Jack Ibagbaga',
-        item: 'Printer',
-        brand: 'HP',
-        description: 'Unable to read cartridge',
-        date_received: '2020/12/4',
-        date_released: 'N/A',
-        status: 'Ongoing',
       },
     ];
 
@@ -128,7 +164,7 @@ class Dashboard extends Component {
         <div style={this.styles.dataTable}>
           <MUIDataTable
             title=" Data Records "
-            data={data}
+            data={this.state.jobsData}
             columns={columns}
             options={options}
           />

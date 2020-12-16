@@ -111,8 +111,8 @@ function Header() {
               <Tab className={classes.tab} label="Configuration" component={Link} to="/configurations"
               />
             </Tabs>
-            <IconButton onClick={handleClick}>
-              <h5 className={classes.username}> {localStorage.username}</h5>
+            <IconButton onClick={handleClick} className={classes.username}>
+             {localStorage.username}
               <ArrowDropDownIcon />
             </IconButton>
             <StyledMenu
