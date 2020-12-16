@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import MUIDataTable from 'mui-datatables';
-import {makeStyles} from '@material-ui/core/styles';
+import {createMuiTheme, makeStyles, MuiThemeProvider} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
@@ -14,6 +14,9 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import axios from 'axios';
 import theme from './Theme';
 import Header from './header';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 function Accounts() {
     const useStyle = makeStyles(() => ({
@@ -86,8 +89,8 @@ function Accounts() {
             },
         },
         {
-            name: '-',
-            label: '-',
+            name: 'options',
+            label: 'Options',
             options: {
                 filter: false,
                 sort: false,
@@ -103,29 +106,34 @@ function Accounts() {
     const [name, setName] = useState('');
 
 
-
     useEffect(() => {
         const userToken = localStorage.getItem('token');
         const username = localStorage.getItem('username');
         axios.get('users', {
             headers: {
-                Authorization: 'JWT' + ' ' + userToken,
+                Authorization: 'Bearer' + ' ' + userToken,
                 'Content-type': 'Application/json',
             },
         })
             .then((response) => {
                 const res = response.data.user;
                 // eslint-disable-next-line no-plusplus
+                console.log(response)
                 for (let i = 0; i < res.length; i++) {
-                    console.log(response);
                     delete res[i].job_orders;
+                    // if(res[i].username === username){
+                    //     res.splice(i,i)
+                    // }
                 }
+                updateStatus(res)
                 setUseData(res);
-                // console.log(dataArray);
             })
             .catch((e) => {
                 if (e.response.status === 401) {
-                  localStorage.clear()
+                    cookies.remove('username', {path: '/'});
+                    cookies.remove('csrf_access_token', {path: '/'});
+                    cookies.remove('csrf_refresh_token', {path: '/'});
+                    cookies.remove('access_token_cookie', {path: '/'});
                     document.location.href = '/'
                 } else {
                     console.log(e)
@@ -143,6 +151,53 @@ function Accounts() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const activateAccount = (id) =>{
+        let auth = localStorage.getItem('token')
+        axios.put('user/' + id, {
+            headers: {
+                'Content-type': 'Application/json',
+                'Authorization': 'Bearer ' + auth
+            }
+        })
+            .then(res => {
+                document.location.href = '/accounts'
+            })
+    }
+
+    const deactivateAccount = (id) =>{
+        let auth = localStorage.getItem('token')
+        axios.delete('user/' + id, {
+            headers: {
+                'Content-type': 'Application/json',
+                'Authorization': 'Bearer ' + auth
+            }
+        })
+            .then(res => {
+                document.location.href = '/accounts'
+            })
+    }
+
+    const updateStatus = (data) => {
+        console.log(data[0].status)
+        let auth = localStorage.getItem('username')
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].status === 'active') {
+                data[i].options =
+                    <Button variant="contained" color="secondary" onClick={() => deactivateAccount(data[i].username)}>
+                        Deactivate
+                    </Button>
+            } else {
+                data[i].options = <Button variant="contained" color="primary" onClick={activateAccount(data[i].username)}>
+                    Activate
+                </Button>
+            }
+
+        }
+
+        return data
+    }
     const createUser = () => {
         const status = 'active'
         const type = 'user'
@@ -156,20 +211,21 @@ function Accounts() {
             status,
             type
         };
-        console.log(data)
         const headers = {
             'Content-type': 'Application/json',
         };
         axios.post('register', data, {headers})
             .then((response) => {
-                console.log(response);
                 if (response.status === 201) {
                     window.location.reload(false);
                 }
             })
             .catch((e) => {
-                console.log(e);
-                // document.location.href = '/';
+                cookies.remove('username', {path: '/'});
+                cookies.remove('csrf_access_token', {path: '/'});
+                cookies.remove('csrf_refresh_token', {path: '/'});
+                cookies.remove('access_token_cookie', {path: '/'});
+                document.location.href = '/'
             })
         ;
 
@@ -177,6 +233,10 @@ function Accounts() {
 
     const options = {
         selectableRows: 'none',
+        sortOrder: {
+            name: 'status',
+            direction: 'asc'
+        },
         customToolbar: () => (
             <Button
                 variant="contained"
@@ -188,6 +248,17 @@ function Accounts() {
             </Button>
         ),
     };
+
+    const getMuiTheme = () => createMuiTheme({
+        overrides: {
+            MUIDataTableBodyCell: {
+                root: {
+                    backgroundColor: "#FFF",
+                    height: "2rem"
+                }
+            }
+        }
+    })
 
     const classes = useStyle();
     return (
@@ -278,12 +349,14 @@ function Accounts() {
                 </Fade>
             </Modal>
             <div className={classes.dataTable}>
-                <MUIDataTable
-                    title="Account Management"
-                    data={useData}
-                    columns={columns}
-                    options={options}
-                />
+                <MuiThemeProvider theme={getMuiTheme}>
+                    <MUIDataTable
+                        title="Account Management"
+                        data={useData}
+                        columns={columns}
+                        options={options}
+                    />
+                </MuiThemeProvider>
             </div>
         </>
     );
