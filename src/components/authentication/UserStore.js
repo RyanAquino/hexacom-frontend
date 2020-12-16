@@ -1,15 +1,12 @@
-import { extendObservable } from 'mobx';
+import React, {Component} from "react";
 
-class UserStore {
-  constructor() {
-    extendObservable(this, {
-      isAuthenticated: false,
-      authToken: '',
-      username: '',
-      isAdmin: false,
-
-    });
+class UserStore extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      userType: 'user'
+    }
   }
 }
 
-export default new UserStore();
+export default UserStore

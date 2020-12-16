@@ -12,11 +12,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/dashboard">
-            {localStorage.getItem('token') ? <Dashboard /> : <Redirect to="/" />}
-          </Route>
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/accounts" component={Accounts} />
-          <Route exact path="/configurations" component={() => <div>Configurations</div>} />
           <Route exact path="/" component={LoginPage} />
         </Switch>
       </BrowserRouter>
