@@ -63,9 +63,11 @@ class Login extends Component {
         if (response.data.access_token) {
           localStorage.setItem('token', response.data.access_token);
           localStorage.setItem('username', this.state.username);
+          document.location.href = '/dashboard'
         }
         console.log(localStorage.getItem('token'));
         console.log(localStorage.getItem('username'));
+        console.log(response.status)
         this.setState({
           checkingCredentials: false,
           invalidCredentials: false
