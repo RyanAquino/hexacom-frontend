@@ -160,7 +160,7 @@ class Dashboard extends Component {
                 })
                     .then(res => {
                         console.log(res)
-                        // document.location.href = '/dashboard'
+                        document.location.href = '/dashboard'
                     })
             }).catch(e => {
             console.log(e)
