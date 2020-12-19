@@ -14,7 +14,7 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            isDeactivated : false,
+            isDeactivated: false,
             checkingCredentials: false,
             invalidCredentials: false,
             failedMessage: ''
@@ -71,11 +71,14 @@ class Login extends Component {
             })
             .catch((e) => {
                 localStorage.clear()
-                this.setState({
-                    checkingCredentials: false,
-                    invalidCredentials: true,
-                    failedMessage:e.response.data.message
-                });
+                if (e.response.data.message) {
+                    this.setState({
+                        checkingCredentials: false,
+                        invalidCredentials: true,
+                        failedMessage: e.response.data.message
+                    });
+                }
+
             })
 
         ;
@@ -85,7 +88,7 @@ class Login extends Component {
         this.setState({
             username: event.target.value,
         });
-    };
+    }
 
     passwordChangeHandler = (event) => {
         this.setState({

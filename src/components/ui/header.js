@@ -15,7 +15,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {Link} from 'react-router-dom';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import Button from "@material-ui/core/Button";
 import axios from 'axios';
 
 const StyledMenu = withStyles({
@@ -89,17 +88,24 @@ function Header() {
         setValue(value);
     };
     const logoutHandler = () => {
-        axios.post('logout')
+        let auth = localStorage.getItem('token')
+        axios.post('logout',{}, {
+            headers: {
+                'Content-type': 'Application/json',
+                'Authorization': 'Bearer ' + auth
+            }
+        })
             .then(response => {
                 console.log(response)
             }).catch(e => {
-                console.log(e)
+            console.log(e)
         })
 
         localStorage.clear()
         document.location.href = '/'
 
     }
+
     const [userType, setType] = useState(false);
     const updateHeader = (v) => {
         setType(v)
@@ -107,17 +113,29 @@ function Header() {
     useEffect(() => {
         const username = localStorage.getItem('username')
         const token = localStorage.getItem('token')
-        axios.get('user/' + username, {headers: {'Content-type': 'Application/json','Authorization': 'Bearer ' + token}})
+        axios.get('user/' + username, {
+            headers: {
+                'Content-type': 'Application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 if (response.data.type === 'admin') {
                     updateHeader(true)
                 }
-            })
+            }).catch(e => {
+            console.log(e.response)
+            localStorage.clear()
+            document.location.href = '/'
+        })
 
         if (window.location.pathname === '/dashboard' && val !== 0) {
             setValue(0);
         } else if (window.location.pathname === '/accounts' && val !== 1) {
             setValue(1);
+        }
+        else if (window.location.pathname === '/password' && val !== 2) {
+            setValue(2);
         }
     }, []);
 
@@ -141,6 +159,7 @@ function Header() {
                                     <Tab className={classes.tab} label="Dashboard" component={Link}
                                          to="/dashboard"/>
                                 </Tabs>
+
                         }
 
 
@@ -159,13 +178,14 @@ function Header() {
                                 <ListItemIcon>
                                     <AccountCircleIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Account"/>
+                                <ListItemText primary="Update Password"
+                                              onClick={() => document.location.href = '/password'}/>
                             </StyledMenuItem>
                             <StyledMenuItem>
                                 <ListItemIcon>
                                     <ExitToAppIcon/>
                                 </ListItemIcon>
-                                    <ListItemText primary="Logout" onClick={logoutHandler}/>
+                                <ListItemText primary="Logout" onClick={logoutHandler}/>
                             </StyledMenuItem>
                         </StyledMenu>
                     </Toolbar>
