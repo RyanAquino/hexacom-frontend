@@ -1,0 +1,12 @@
+version: '3.8'
+# docker-compose up && docker-compose rm -fsv # run and remove on exit
+
+services:
+  erp-backend:
+    image: hexacom-react-app
+    build: .
+    container_name: hexacom-react-app
+    ports:
+      - 8080:80
+    expose:
+      - 8080
