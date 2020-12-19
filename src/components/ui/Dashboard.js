@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import MUIDataTable from 'mui-datatables';
 import Header from './header';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import {Grid} from "@material-ui/core";
@@ -72,7 +71,6 @@ class Dashboard extends Component {
             }
 
         }
-
         return data
     }
 
@@ -82,6 +80,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         const token = localStorage.getItem('token')
+        console.log('token')
         if (token === null) {
             document.location.href = '/'
         }
@@ -161,7 +160,7 @@ class Dashboard extends Component {
                 })
                     .then(res => {
                         console.log(res)
-                        document.location.href = '/dashboard'
+                        // document.location.href = '/dashboard'
                     })
             }).catch(e => {
             console.log(e)

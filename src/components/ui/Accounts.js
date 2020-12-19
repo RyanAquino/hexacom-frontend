@@ -14,9 +14,6 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import axios from 'axios';
 import theme from './Theme';
 import Header from './header';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
 
 function Accounts() {
     const useStyle = makeStyles(() => ({
@@ -117,23 +114,16 @@ function Accounts() {
         })
             .then((response) => {
                 const res = response.data.user;
-                // eslint-disable-next-line no-plusplus
                 console.log(response)
                 for (let i = 0; i < res.length; i++) {
                     delete res[i].job_orders;
-                    // if(res[i].username === username){
-                    //     res.splice(i,i)
-                    // }
                 }
                 updateStatus(res)
                 setUseData(res);
             })
             .catch((e) => {
                 if (e.response.status === 401) {
-                    cookies.remove('username', {path: '/'});
-                    cookies.remove('csrf_access_token', {path: '/'});
-                    cookies.remove('csrf_refresh_token', {path: '/'});
-                    cookies.remove('access_token_cookie', {path: '/'});
+                    localStorage.clear()
                     document.location.href = '/'
                 } else {
                     console.log(e)
@@ -152,30 +142,21 @@ function Accounts() {
         setOpen(false);
     };
 
-    const activateAccount = (id) =>{
+    const updateAccount = (id) => {
         let auth = localStorage.getItem('token')
-        axios.put('user/' + id, {
-            headers: {
-                'Content-type': 'Application/json',
-                'Authorization': 'Bearer ' + auth
+        axios.post('user_switch/' + id, {}, {
+                headers: {
+                    'Content-type': 'Application/json',
+                    'Authorization': 'Bearer ' + auth
+                }
             }
-        })
+        )
             .then(res => {
                 document.location.href = '/accounts'
-            })
-    }
-
-    const deactivateAccount = (id) =>{
-        let auth = localStorage.getItem('token')
-        axios.delete('user/' + id, {
-            headers: {
-                'Content-type': 'Application/json',
-                'Authorization': 'Bearer ' + auth
-            }
+            }).catch(e => {
+            console.log('I am erroring!')
+            console.log(e)
         })
-            .then(res => {
-                document.location.href = '/accounts'
-            })
     }
 
     const updateStatus = (data) => {
@@ -185,13 +166,14 @@ function Accounts() {
         for (let i = 0; i < data.length; i++) {
             if (data[i].status === 'active') {
                 data[i].options =
-                    <Button variant="contained" color="secondary" onClick={() => deactivateAccount(data[i].username)}>
+                    <Button variant="contained" color="secondary" onClick={() => updateAccount(data[i].username)}>
                         Deactivate
                     </Button>
             } else {
-                data[i].options = <Button variant="contained" color="primary" onClick={activateAccount(data[i].username)}>
-                    Activate
-                </Button>
+                data[i].options =
+                    <Button variant="contained" color="primary" onClick={() => updateAccount(data[i].username)}>
+                        Activate
+                    </Button>
             }
 
         }
@@ -221,10 +203,7 @@ function Accounts() {
                 }
             })
             .catch((e) => {
-                cookies.remove('username', {path: '/'});
-                cookies.remove('csrf_access_token', {path: '/'});
-                cookies.remove('csrf_refresh_token', {path: '/'});
-                cookies.remove('access_token_cookie', {path: '/'});
+                localStorage.clear()
                 document.location.href = '/'
             })
         ;
